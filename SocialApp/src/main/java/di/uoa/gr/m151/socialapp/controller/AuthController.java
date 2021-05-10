@@ -34,4 +34,10 @@ public class AuthController {
                 .body("Username or password are empty. Cannot create user");
 
     }
+
+    @GetMapping
+    public String getHome(){
+        System.out.println("This is home");
+        return "home";
+    }
 }
