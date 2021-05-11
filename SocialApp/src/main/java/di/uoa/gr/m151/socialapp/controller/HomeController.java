@@ -1,6 +1,8 @@
 package di.uoa.gr.m151.socialapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,13 +10,14 @@ import di.uoa.gr.m151.socialapp.service.UserService;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/api/")
+/*@RequestMapping("/home")*/
 public class HomeController {
     @Autowired
     private UserService userService;
 
-    @GetMapping
+    @GetMapping("/home")
     public ResponseEntity<?> showHomePage() {
-        return (ResponseEntity<?>) ResponseEntity.status(200);
+       /* HttpHeaders responseHeaders = new HttpHeaders();*/
+        return new ResponseEntity<String>(HttpStatus.CREATED.toString(),  new HttpHeaders(), HttpStatus.CREATED);
     }
 }
