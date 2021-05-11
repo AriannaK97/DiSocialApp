@@ -2,6 +2,7 @@ package di.uoa.gr.m151.socialapp.config;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -45,19 +46,21 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         String token = request.getHeader(jwtProperties.getHeaderString());
 
         if (token != null) {
-            String user = JWT.require(Algorithm.HMAC512(jwtProperties.getJwtSecret().getBytes()))
+            try {
+                String user = JWT.require(Algorithm.HMAC512(jwtProperties.getJwtSecret().getBytes()))
                     .build()
                     .verify(token.replace(jwtProperties.getTokenPrefix(), ""))
                     .getSubject();
-
-            if (user != null) {
-                // new arraylist means authorities
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+                if (user != null) {
+                    // new arraylist means authorities
+                    return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+                }
+            } catch (JWTDecodeException jwtExc) {
+                jwtExc.printStackTrace();
             }
 
             return null;
         }
-
         return null;
     }
 }
