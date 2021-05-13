@@ -1,11 +1,11 @@
 package di.uoa.gr.m151.socialapp.entity;
 
 import lombok.Data;
-import lombok.Getter;
 
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Iterator;
 
 @Entity
 @Table(name = "social_user")
@@ -40,9 +40,57 @@ public class User {
                     CascadeType.DETACH, CascadeType.REFRESH})
     private Collection<UserActionLog> logList;
 
+    @OneToMany(
+            mappedBy = "sender",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Collection<Message> sentMessages;
+
+    @OneToMany(
+            mappedBy = "receiver",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Collection<Message> receivedMessages;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "social_user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
+
+    @ManyToMany(mappedBy = "upVotes")
+    private Collection<ThreadPost> threadPosts;
+
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Collection<UserPageRating> pageRatings;
+
+    public void addPageRating(Page page, Integer rating) {
+        UserPageRating userPageRating = new UserPageRating(this, page, rating);
+        pageRatings.add(userPageRating);
+        page.getUserRatings().add(userPageRating);
+    }
+
+    public void removeUserReaction(Page page) {
+/*        userReactions.removeIf(userReaction -> userReaction.getUser().equals(user)
+                && userReaction.getFeedPost().equals(this));*/
+        for (Iterator<UserPageRating> iterator = pageRatings.iterator();
+             iterator.hasNext(); ) {
+            UserPageRating userPageRating = iterator.next();
+
+            if (userPageRating.getUser().equals(this) &&
+                    userPageRating.getPage().equals(page)) {
+                iterator.remove();
+                userPageRating.getPage().getUserRatings().remove(userPageRating);
+                userPageRating.setUser(null);
+                userPageRating.setPage(null);
+            }
+        }
+    }
+
 }
