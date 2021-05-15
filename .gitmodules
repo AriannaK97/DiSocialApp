@@ -1,0 +1,3 @@
+[submodule "SocialApp/DiS_FrontEnd"]
+	path = SocialApp/DiS_FrontEnd
+	url = https://github.com/AriannaK97/DiS_FrontEnd.git
