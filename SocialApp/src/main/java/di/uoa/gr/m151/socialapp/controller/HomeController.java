@@ -5,12 +5,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import di.uoa.gr.m151.socialapp.service.UserService;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 /*@RequestMapping("/home")*/
+@CrossOrigin(origins = "https://localhost:8081")
 public class HomeController {
     @Autowired
     private UserService userService;
