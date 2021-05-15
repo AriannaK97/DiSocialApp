@@ -8,7 +8,7 @@ export default class Home extends React.Component {
     }
 
     componentDidMount() {
-        client({method: 'GET', path: '/api/auth/home'}).done(response => {
+        client({method: 'GET', path: '/home'}).done(response => {
             const value = response.data;
             this.setState({ value });
         });
