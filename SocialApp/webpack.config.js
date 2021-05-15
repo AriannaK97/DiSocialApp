@@ -1,10 +1,14 @@
 const use = require("use");
 module.exports = {
+    entry: './src/main/resources/templates/App.js',
     devtool: 'source-map',
-    mode: "development",
+    cache: true,
+    mode: 'development',
     output: {
-        filename: 'react-app.js'
+        path: __dirname,
+        filename: './react-app.js'
     },
+
     module: {
         rules: [{
             test: /\.(js|jsx)$/,

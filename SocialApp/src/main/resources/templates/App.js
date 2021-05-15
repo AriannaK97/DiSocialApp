@@ -4,6 +4,7 @@ import Login from './components/login/login'
 import SignUp from './components/login/signup'
 import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
+const client = require('./client');
 import { BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
           <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
             <ul className="navbar-nav ml-auto">
             <li className="nav-item">
-                <Link className="nav-link" to={"/"}>Home</Link>
+                <Link className="nav-link" to={"/api/auth/home"}>Home</Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to={"/sign-in"}>Login</Link>
@@ -33,7 +34,7 @@ function App() {
     <div className="auth-wrapper">
     <div className="auth-inner">
       <Switch>
-        <Route exact path='/home' component={Home} />
+        <Route exact path='/api/auth/home' component={Home} />
         <Route path="/api/auth/signin" component={Login} />
         <Route path="/api/auth/signup" component={SignUp} />
       </Switch>

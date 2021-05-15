@@ -1,4 +1,5 @@
 import React from 'react';
+import client from '../../client'
 
 export default class Home extends React.Component {
     constructor(props) {
@@ -6,20 +7,11 @@ export default class Home extends React.Component {
       this.state = {value: ''};
     }
 
-
     componentDidMount() {
-        fetch("/home")
-            .then(res => res.json())
-            .then(
-                (response) => {
-                    this.setState({
-                        value: response
-                    });
-                },
-                (error) => {
-                    alert(error);
-                }
-            )
+        client({method: 'GET', path: '/api/auth/home'}).done(response => {
+            const value = response.data;
+            this.setState({ value });
+        });
     }
   
     render() {
