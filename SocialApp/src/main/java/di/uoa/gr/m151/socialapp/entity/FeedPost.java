@@ -4,11 +4,11 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -27,5 +27,35 @@ public class FeedPost {
 
     @Column(name="post_time_stamp")
     private Timestamp postTime;
+
+    @OneToMany(
+            mappedBy = "feedPost",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<FeedReaction> userReactions;
+
+    public void addUserReaction(User user, Integer reactionType) {
+        FeedReaction feedReaction = new FeedReaction(user, this, reactionType);
+        userReactions.add(feedReaction);
+    }
+
+    public void removeUserReaction(User user) {
+
+/*        userReactions.removeIf(userReaction -> userReaction.getUser().equals(user)
+                && userReaction.getFeedPost().equals(this));*/
+
+        for (Iterator<FeedReaction> iterator = userReactions.iterator();
+             iterator.hasNext(); ) {
+            FeedReaction feedReaction = iterator.next();
+
+            if (feedReaction.getFeedPost().equals(this) &&
+                    feedReaction.getUser().equals(user)) {
+                iterator.remove();
+                feedReaction.setUser(null);
+                feedReaction.setFeedPost(null);
+            }
+        }
+    }
 
 }

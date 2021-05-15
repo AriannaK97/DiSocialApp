@@ -14,4 +14,5 @@ public interface UserService extends UserDetailsService {
 	public List<User> findAllUsers();
 
 	boolean userExists(String username);
+
 }
