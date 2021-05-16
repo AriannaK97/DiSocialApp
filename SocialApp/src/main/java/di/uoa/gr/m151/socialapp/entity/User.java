@@ -76,7 +76,7 @@ public class User {
         page.getUserRatings().add(userPageRating);
     }
 
-    public void removeUserReaction(Page page) {
+    public void removePageRating(Page page) {
 /*        userReactions.removeIf(userReaction -> userReaction.getUser().equals(user)
                 && userReaction.getFeedPost().equals(this));*/
         for (Iterator<UserPageRating> iterator = pageRatings.iterator();
