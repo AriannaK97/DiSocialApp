@@ -58,6 +58,9 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             } catch (JWTDecodeException jwtExc) {
                 jwtExc.printStackTrace();
             }
+            catch (Exception exception) {
+                exception.printStackTrace();
+            }
 
             return null;
         }

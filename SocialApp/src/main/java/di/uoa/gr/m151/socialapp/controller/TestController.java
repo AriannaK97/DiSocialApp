@@ -22,20 +22,4 @@ public class TestController {
 
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
-/*        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
-        }*/
-
-
-
-
-        userService.save(user);
-
-        return ResponseEntity.ok("User Created");
-
-    }
 }

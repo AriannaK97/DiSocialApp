@@ -1,10 +1,26 @@
 package di.uoa.gr.m151.socialapp.controller;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import di.uoa.gr.m151.socialapp.config.JWTConstants;
+import di.uoa.gr.m151.socialapp.config.JwtTokenResponse;
 import di.uoa.gr.m151.socialapp.entity.User;
 import di.uoa.gr.m151.socialapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api/auth/")
@@ -12,6 +28,31 @@ public class AuthController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    JWTConstants jwtProperties;
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody User user) {
+
+        authenticate(user.getUsername(), user.getPassword());
+
+        String token = JWT.create()
+                .withSubject(user.getUsername())
+                .withExpiresAt(new Date(System.currentTimeMillis() + jwtProperties.getJwtExpirationMs()))
+                .sign(Algorithm.HMAC512(jwtProperties.getJwtSecret().getBytes()));
+
+        User responseUser = userService.findByUserName(user.getUsername());
+        responseUser.setPassword("");
+
+
+        return ResponseEntity.ok(new JwtTokenResponse(token, responseUser));
+
+
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
@@ -35,9 +76,16 @@ public class AuthController {
 
     }
 
-    @GetMapping
-    public String getHome(){
-        System.out.println("This is home");
-        return "home";
+
+    private void authenticate(@NotNull String username, @NotNull String password) {
+
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>()));
+        } catch (DisabledException e) {
+            throw new DisabledException("USER_DISABLED", e);
+        } catch (BadCredentialsException e) {
+            throw new BadCredentialsException("INVALID_CREDENTIALS", e);
+        }
     }
+
 }
