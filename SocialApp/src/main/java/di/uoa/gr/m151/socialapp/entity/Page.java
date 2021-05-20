@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -16,11 +17,13 @@ public class Page {
 
     @Id
     @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @GeneratedValue(generator = "uuid")
     @Column(name = "id", unique = true, nullable = false)
     @Type(type="pg-uuid")
     private UUID id;
 
     @Column(name = "title")
+    @NotNull
     String title;
 
     @OneToMany(

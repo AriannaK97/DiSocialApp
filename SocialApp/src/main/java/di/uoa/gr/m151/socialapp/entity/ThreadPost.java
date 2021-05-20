@@ -15,6 +15,7 @@ public class ThreadPost {
 
     @Id
     @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @GeneratedValue(generator = "uuid")
     @Column(name = "id", unique = true, nullable = false)
     @Type(type="pg-uuid")
     private UUID id;
