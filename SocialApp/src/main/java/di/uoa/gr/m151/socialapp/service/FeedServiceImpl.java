@@ -43,10 +43,10 @@ public class FeedServiceImpl implements FeedService{
         feedPost.setContent(feedPostDTO.getContent());
 
         //Todo: where is the user who did the post
-        FeedReaction feedReaction = new FeedReaction();
-        feedReaction.setFeedPost(feedPost);
-        feedReaction.setUser(postUser);
-        //feedReactionRepository.save(feedReaction);
+//        FeedReaction feedReaction = new FeedReaction();
+//        feedReaction.setFeedPost(feedPost);
+//        feedReaction.setUser(postUser);
+//        //feedReactionRepository.save(feedReaction);
 
         return feedPostRepository.save(feedPost);
     }
