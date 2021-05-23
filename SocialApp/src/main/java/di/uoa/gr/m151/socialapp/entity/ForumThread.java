@@ -1,5 +1,6 @@
 package di.uoa.gr.m151.socialapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -24,6 +25,7 @@ public class ForumThread {
     private String title;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "page_id")
     private Page page;
 

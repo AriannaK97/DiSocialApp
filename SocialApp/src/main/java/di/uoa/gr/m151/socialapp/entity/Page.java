@@ -1,6 +1,7 @@
 package di.uoa.gr.m151.socialapp.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -31,6 +32,7 @@ public class Page {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JsonIgnore
     private Collection<UserPageRating> userRatings;
 
     @OneToMany(mappedBy = "page",

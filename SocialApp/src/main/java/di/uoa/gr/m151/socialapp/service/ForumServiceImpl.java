@@ -98,4 +98,15 @@ public class ForumServiceImpl implements ForumService {
        return pageRepository.findAll();
     }
 
+    @Override
+    public List<ForumThread> findAllThreadsByPage(UUID uuid) {
+        return forumThreadRepository.findAllByPage_Id(uuid);
+    }
+
+    @Override
+    public List<ThreadPost> findAllThreadsPostsByThread(UUID uuid) {
+        return threadPostRepository.findAllByThread_Id(uuid);
+    }
+
+
 }

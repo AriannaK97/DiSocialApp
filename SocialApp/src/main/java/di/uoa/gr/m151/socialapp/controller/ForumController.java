@@ -60,4 +60,17 @@ public class ForumController {
         return forumService.findAllPages();
     }
 
+    @GetMapping("/page/{pageId}/threads")
+    public List<ForumThread> retrievePageThreads(@PathVariable UUID pageId) {
+
+        return forumService.findAllThreadsByPage(pageId);
+    }
+
+    @GetMapping("/page/thread/{threadId}/threadposts")
+    public List<ThreadPost> retrieveThreadPosts(@PathVariable UUID threadId) {
+
+        return forumService.findAllThreadsPostsByThread(threadId);
+    }
+
+
 }

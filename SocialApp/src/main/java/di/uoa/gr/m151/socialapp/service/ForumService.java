@@ -27,6 +27,10 @@ public interface ForumService {
 
     List<Page> findAllPages();
 
+    List<ForumThread> findAllThreadsByPage(UUID uuid);
+
+    List<ThreadPost> findAllThreadsPostsByThread(UUID uuid);
+
     /*List<ForumThread> findAllPageThreads()*/
 
 }

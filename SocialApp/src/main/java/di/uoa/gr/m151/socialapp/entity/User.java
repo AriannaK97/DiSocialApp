@@ -1,5 +1,6 @@
 package di.uoa.gr.m151.socialapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 
@@ -61,6 +62,7 @@ public class User {
     private Collection<Role> roles;
 
     @ManyToMany(mappedBy = "upVotes")
+    @JsonIgnore
     private Collection<ThreadPost> threadPosts;
 
     @OneToMany(
