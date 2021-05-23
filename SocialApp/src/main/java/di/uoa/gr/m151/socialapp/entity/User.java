@@ -41,6 +41,11 @@ public class User {
                     CascadeType.DETACH, CascadeType.REFRESH})
     private Collection<UserActionLog> logList;
 
+/*    @OneToMany(mappedBy = "user",
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
+    private Collection<FeedPost> feedPosts;*/
+
     @OneToMany(
             mappedBy = "sender",
             cascade = CascadeType.ALL,

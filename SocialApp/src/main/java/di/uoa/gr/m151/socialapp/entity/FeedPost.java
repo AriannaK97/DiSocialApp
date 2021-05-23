@@ -18,6 +18,7 @@ public class FeedPost {
 
     @Id
     @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @GeneratedValue(generator = "uuid")
     @Column(name = "id", unique = true, nullable = false)
     @Type(type="pg-uuid")
     private UUID id;
@@ -27,6 +28,10 @@ public class FeedPost {
 
     @Column(name="post_time_stamp")
     private Timestamp postTime;
+
+    @ManyToOne
+    @JoinColumn(name = "social_user_id")
+    private User user;
 
     @OneToMany(
             mappedBy = "feedPost",

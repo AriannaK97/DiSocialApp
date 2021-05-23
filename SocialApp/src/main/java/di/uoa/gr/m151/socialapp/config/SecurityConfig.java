@@ -43,6 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 /*.antMatchers(("/**")).permitAll();*/
                /* .antMatchers("/api/test/**").permitAll()*/
                 .antMatchers("/forum/**").permitAll()
+                .antMatchers("/chat/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
               /*  .addFilter(new JWTAuthenticationFilter(authenticationManager(),jwtConstants))*/
