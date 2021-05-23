@@ -1,7 +1,9 @@
 package di.uoa.gr.m151.socialapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -20,6 +22,7 @@ public class FeedReaction {
     @MapsId("userId")
     private User user;
 
+    //@JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("feedPostId")
     private FeedPost feedPost;
