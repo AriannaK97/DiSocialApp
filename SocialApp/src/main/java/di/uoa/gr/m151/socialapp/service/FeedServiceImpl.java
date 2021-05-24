@@ -35,18 +35,14 @@ public class FeedServiceImpl implements FeedService{
     public FeedPost saveFeedPost(FeedPostDTO feedPostDTO) {
         //FeedPost feedPost = feedPostRepository.findById(feedPostDTO.getPostId()).orElse(null);
 
+        //todo: should the user be passed as an object from the front-end's localstorage or searched based on the username passed?
         User postUser = userService.findByUserName(feedPostDTO.getUsername());
 
         FeedPost feedPost = new FeedPost();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         feedPost.setPostTime(timestamp);
         feedPost.setContent(feedPostDTO.getContent());
-
-        //Todo: where is the user who did the post
-//        FeedReaction feedReaction = new FeedReaction();
-//        feedReaction.setFeedPost(feedPost);
-//        feedReaction.setUser(postUser);
-//        //feedReactionRepository.save(feedReaction);
+        feedPost.setUser(postUser);
 
         return feedPostRepository.save(feedPost);
     }
