@@ -33,9 +33,7 @@ public class FeedServiceImpl implements FeedService{
 
     @Override
     public FeedPost saveFeedPost(FeedPostDTO feedPostDTO) {
-        //FeedPost feedPost = feedPostRepository.findById(feedPostDTO.getPostId()).orElse(null);
 
-        //todo: should the user be passed as an object from the front-end's localstorage or searched based on the username passed?
         User postUser = userService.findByUserName(feedPostDTO.getUsername());
 
         FeedPost feedPost = new FeedPost();
@@ -51,4 +49,12 @@ public class FeedServiceImpl implements FeedService{
     public List<FeedPost> findAllPosts() {
         return feedPostRepository.findAll();
     }
+
+    @Override
+    public List<FeedPostDTO> findAllPostsDTO() {
+        //todo fix return with dto
+        //return feedPostRepository.findFeedHistory();
+        return null;
+    }
+
 }

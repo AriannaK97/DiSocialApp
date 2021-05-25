@@ -21,4 +21,7 @@ public class FeedController {
     @GetMapping()
     public List<FeedPost> retrieveFeedPosts(){return feedService.findAllPosts();}
 
+    @GetMapping("/newsfeed")
+    public List<FeedPostDTO> getNewsFeedPosts(){return feedService.findAllPostsDTO();}
+
 }

@@ -13,4 +13,6 @@ public interface FeedService {
 
     List<FeedPost> findAllPosts();
 
+    List<FeedPostDTO> findAllPostsDTO();
+
 }
