@@ -2,6 +2,7 @@ package di.uoa.gr.m151.socialapp.service;
 
 import di.uoa.gr.m151.socialapp.DTO.FeedPostDTO;
 import di.uoa.gr.m151.socialapp.entity.FeedPost;
+import di.uoa.gr.m151.socialapp.entity.FeedReaction;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,6 +14,6 @@ public interface FeedService {
 
     List<FeedPost> findAllPosts();
 
-    List<FeedPostDTO> findAllPostsDTO();
+    List<FeedPostDTO> findAllPostsDTO(String username);
 
 }

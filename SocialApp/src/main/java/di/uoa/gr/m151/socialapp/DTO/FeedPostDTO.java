@@ -21,4 +21,6 @@ public class FeedPostDTO {
 
     String username;
 
+    Integer currentUserReaction;
+
 }

@@ -22,7 +22,7 @@ public class FeedReaction {
     @MapsId("userId")
     private User user;
 
-    //@JsonIgnore
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("feedPostId")
     private FeedPost feedPost;

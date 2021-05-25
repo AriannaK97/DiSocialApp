@@ -51,8 +51,10 @@ public class FeedServiceImpl implements FeedService{
     }
 
     @Override
-    public List<FeedPostDTO> findAllPostsDTO() {
+    public List<FeedPostDTO> findAllPostsDTO(String username) {
         //todo fix return with dto
+        User currentUser = userService.findByUserName(username);
+        feedReactionRepository.findFeedReactionByUser(currentUser);
         //return feedPostRepository.findFeedHistory();
         return null;
     }
