@@ -1,8 +1,11 @@
 package di.uoa.gr.m151.socialapp.service;
 
 
+import di.uoa.gr.m151.socialapp.DTO.PageRatingDTO;
+import di.uoa.gr.m151.socialapp.DTO.UserDTO;
 import di.uoa.gr.m151.socialapp.entity.Role;
 import di.uoa.gr.m151.socialapp.entity.User;
+import di.uoa.gr.m151.socialapp.entity.UserPageRating;
 import di.uoa.gr.m151.socialapp.repository.RoleRepository;
 import di.uoa.gr.m151.socialapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -53,12 +57,42 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public void save(User user) {
+	public User save(User user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_SIMPLE")));
 
 		 // save user in the database
-		userRepository.save(user);
+		return userRepository.save(user);
+	}
+
+	public User update(User user) {
+		return userRepository.save(user);
+	}
+
+	public UserDTO fillUserDTO(User user) {
+
+		UserDTO userDTO = new UserDTO();
+
+		userDTO.setId(user.getId());
+		userDTO.setUsername(user.getUsername());
+		userDTO.setEmail(user.getEmail());
+		userDTO.setFirstName(user.getFirstName());
+		userDTO.setLastName(user.getLastName());
+		userDTO.setPhone(user.getPhone());
+
+		List<PageRatingDTO> ratingsList = new ArrayList<PageRatingDTO>();
+		for (UserPageRating rating : user.getPageRatings()) {
+			PageRatingDTO dto = new PageRatingDTO();
+			dto.setUsername(user.getUsername());
+			dto.setPageId(rating.getPage().getId());
+			dto.setRating(rating.getRating());
+			dto.setPageTitle(rating.getPage().getTitle());
+			ratingsList.add(dto);
+		}
+
+		userDTO.setPageRatings(ratingsList);
+		return userDTO;
+
 	}
 
 	@Override

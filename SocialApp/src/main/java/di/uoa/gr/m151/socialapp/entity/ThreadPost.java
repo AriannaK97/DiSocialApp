@@ -7,6 +7,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -26,6 +27,7 @@ public class ThreadPost {
 
     @ManyToOne
     @JoinColumn(name = "user_Id")
+    @JsonIgnore
     User creator;
 
     @ManyToOne
@@ -41,7 +43,7 @@ public class ThreadPost {
             joinColumns = @JoinColumn(name = "forum_thread_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private Collection<User> upVotes;
+    private Set<User> upVotes;
 
     public void addUpVote(User user) {
         upVotes.add(user);

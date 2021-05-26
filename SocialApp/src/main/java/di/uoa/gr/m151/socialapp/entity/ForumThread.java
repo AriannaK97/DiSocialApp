@@ -25,8 +25,8 @@ public class ForumThread {
     private String title;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "page_id")
+    @JsonIgnore
     private Page page;
 
     @OneToMany(mappedBy = "thread",

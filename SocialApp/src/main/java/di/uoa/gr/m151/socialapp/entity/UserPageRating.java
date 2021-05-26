@@ -1,5 +1,6 @@
 package di.uoa.gr.m151.socialapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,7 @@ public class UserPageRating {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
+    @JsonIgnore
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,8 +28,8 @@ public class UserPageRating {
     private Page page;
 
     @Column(name = "rating")
-    @Min(value = 0, message = "Rates are between 0 and 10")
-    @Max(value = 10, message = "Rates are between 0 and 10")
+    @Min(value = 0, message = "Rates are between 0 and 5")
+    @Max(value = 5, message = "Rates are between 0 and 5")
     Integer rating;
 
     public UserPageRating(User user, Page page, Integer rating) {
@@ -35,6 +37,25 @@ public class UserPageRating {
         this.page = page;
         this.rating = rating;
         this.id = new UserPageRatingId(user.getId(), page.getId());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (!(obj instanceof UserPageRating))
+            return false;
+        if (obj == this)
+            return true;
+        UserPageRating ratingObject = ((UserPageRating) obj);
+
+        return this.getPage().getId() == ratingObject.getPage().getId()
+                && getUser().getUsername().equals(ratingObject.getUser().getUsername());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getId().getUserId().intValue();
     }
 
 

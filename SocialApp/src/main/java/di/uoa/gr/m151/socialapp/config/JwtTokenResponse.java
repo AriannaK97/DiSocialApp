@@ -1,5 +1,6 @@
 package di.uoa.gr.m151.socialapp.config;
 
+import di.uoa.gr.m151.socialapp.DTO.UserDTO;
 import di.uoa.gr.m151.socialapp.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +15,6 @@ public class JwtTokenResponse implements Serializable {
 
     private final String token;
 
-    private final User user;
+    private final UserDTO user;
 
 }

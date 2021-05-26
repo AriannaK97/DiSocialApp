@@ -2,6 +2,7 @@ package di.uoa.gr.m151.socialapp.controller;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import di.uoa.gr.m151.socialapp.DTO.UserDTO;
 import di.uoa.gr.m151.socialapp.config.JWTConstants;
 import di.uoa.gr.m151.socialapp.config.JwtTokenResponse;
 import di.uoa.gr.m151.socialapp.entity.User;
@@ -46,10 +47,11 @@ public class AuthController {
                 .sign(Algorithm.HMAC512(jwtProperties.getJwtSecret().getBytes()));
 
         User responseUser = userService.findByUserName(user.getUsername());
-        responseUser.setPassword("");
+
+        UserDTO userDTO = userService.fillUserDTO(responseUser);
 
 
-        return ResponseEntity.ok(new JwtTokenResponse(token, responseUser));
+        return ResponseEntity.ok(new JwtTokenResponse(token, userDTO));
 
 
     }

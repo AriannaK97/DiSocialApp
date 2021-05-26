@@ -1,7 +1,9 @@
 package di.uoa.gr.m151.socialapp.service;
 
 import di.uoa.gr.m151.socialapp.DTO.ForumThreadDTO;
+import di.uoa.gr.m151.socialapp.DTO.PageRatingDTO;
 import di.uoa.gr.m151.socialapp.DTO.ThreadPostDTO;
+import di.uoa.gr.m151.socialapp.DTO.ThreadVoteDTO;
 import di.uoa.gr.m151.socialapp.entity.ForumThread;
 import di.uoa.gr.m151.socialapp.entity.Page;
 import di.uoa.gr.m151.socialapp.entity.ThreadPost;
@@ -72,6 +74,34 @@ public class ForumServiceImpl implements ForumService {
         threadPost.setThread(thread);
 
         return  threadPostRepository.save(threadPost);
+    }
+
+    @Override
+    public boolean saveThreadPostUpVote(ThreadVoteDTO threadVoteDTO) {
+        ThreadPost threadPost = threadPostRepository.findById(threadVoteDTO.getThreadPostId()).orElse(null);
+        User user = userService.findByUserName(threadVoteDTO.getUsername());
+        if (threadPost == null || user == null) {
+            return false;
+        }
+
+        threadPost.addUpVote(user);
+        return threadPostRepository.save(threadPost) != null;
+
+    }
+
+    @Override
+    public boolean savePageRating(PageRatingDTO pageRatingDTO) {
+
+        Page page = pageRepository.findById(pageRatingDTO.getPageId()).orElse(null);
+        User user = userService.findByUserName(pageRatingDTO.getUsername());
+
+        if (page == null || user == null) {
+            return false;
+        }
+
+        user.addPageRating(page, pageRatingDTO.getRating());
+        return userService.update(user) != null;
+
     }
 
     @Autowired

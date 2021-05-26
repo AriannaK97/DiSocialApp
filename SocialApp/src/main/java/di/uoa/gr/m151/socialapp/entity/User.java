@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Set;
 
 @Entity
 @Table(name = "social_user")
@@ -77,12 +78,12 @@ public class User {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private Collection<UserPageRating> pageRatings;
+    private Set<UserPageRating> pageRatings;
 
     public void addPageRating(Page page, Integer rating) {
         UserPageRating userPageRating = new UserPageRating(this, page, rating);
         pageRatings.add(userPageRating);
-        page.getUserRatings().add(userPageRating);
+        //page.getUserRatings().add(userPageRating);
     }
 
     public void removePageRating(Page page) {
@@ -95,11 +96,27 @@ public class User {
             if (userPageRating.getUser().equals(this) &&
                     userPageRating.getPage().equals(page)) {
                 iterator.remove();
-                userPageRating.getPage().getUserRatings().remove(userPageRating);
+                //userPageRating.getPage().getUserRatings().remove(userPageRating);
                 userPageRating.setUser(null);
                 userPageRating.setPage(null);
             }
         }
+    }
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (!(obj instanceof User))
+            return false;
+        if (obj == this)
+            return true;
+        User user = ((User) obj);
+
+        return this.getId() == user.getId() && this.getUsername() == user.getUsername();
+
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getId().intValue();
     }
 
 }

@@ -1,7 +1,9 @@
 package di.uoa.gr.m151.socialapp.service;
 
 import di.uoa.gr.m151.socialapp.DTO.ForumThreadDTO;
+import di.uoa.gr.m151.socialapp.DTO.PageRatingDTO;
 import di.uoa.gr.m151.socialapp.DTO.ThreadPostDTO;
+import di.uoa.gr.m151.socialapp.DTO.ThreadVoteDTO;
 import di.uoa.gr.m151.socialapp.entity.ForumThread;
 import di.uoa.gr.m151.socialapp.entity.Page;
 import di.uoa.gr.m151.socialapp.entity.ThreadPost;
@@ -18,6 +20,10 @@ public interface ForumService {
     ThreadPost findThreadPostById(UUID id);
 
     ThreadPost saveThreadPost(ThreadPostDTO threadPostDTO);
+
+    boolean saveThreadPostUpVote(ThreadVoteDTO threadVoteDTO);
+
+    boolean savePageRating(PageRatingDTO pageRatingDTO);
 
     Page findPageByTitle(String title);
 
