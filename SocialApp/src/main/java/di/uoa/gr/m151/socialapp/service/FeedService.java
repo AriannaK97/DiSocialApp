@@ -1,6 +1,7 @@
 package di.uoa.gr.m151.socialapp.service;
 
 import di.uoa.gr.m151.socialapp.DTO.FeedPostDTO;
+import di.uoa.gr.m151.socialapp.DTO.FeedReactionDTO;
 import di.uoa.gr.m151.socialapp.entity.FeedPost;
 import di.uoa.gr.m151.socialapp.entity.FeedReaction;
 
@@ -14,6 +15,8 @@ public interface FeedService {
 
     List<FeedPost> findAllPosts();
 
-    List<FeedPostDTO> findAllPostsDTO(String username);
+    List<FeedPostDTO> retrieveFeed(String username);
+
+    public boolean saveFeedPostReaction(FeedReactionDTO feedReactionDTO);
 
 }

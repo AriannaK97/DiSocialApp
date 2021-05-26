@@ -17,4 +17,9 @@ public interface FeedPostRepository extends PagingAndSortingRepository<FeedPost,
 //    @Query("select new di.uoa.gr.m151.socialapp.DTO.FeedPostDTO(f.id, f.content, current_date , f.userReactions, f.user.username) " +
 //            "from FeedPost as f inner join User su on f.user.id=su.id order by f.postTime")
 //    List<FeedPostDTO> findFeedHistory();
+
+/*    @Query("select new di.uoa.gr.m151.socialapp.DTO.FeedPostDTO(f.id, f.content, current_date , f.user.username) " +
+            "from FeedPost as f  order by f.postTime")
+    List<FeedPostDTO> findFeedHistory();*/
+
 }

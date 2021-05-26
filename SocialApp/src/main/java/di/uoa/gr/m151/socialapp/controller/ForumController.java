@@ -5,13 +5,8 @@ import di.uoa.gr.m151.socialapp.DTO.ThreadPostDTO;
 import di.uoa.gr.m151.socialapp.entity.ForumThread;
 import di.uoa.gr.m151.socialapp.entity.Page;
 import di.uoa.gr.m151.socialapp.entity.ThreadPost;
-import di.uoa.gr.m151.socialapp.entity.User;
 import di.uoa.gr.m151.socialapp.service.ForumService;
-import di.uoa.gr.m151.socialapp.service.ForumThreadService;
-import di.uoa.gr.m151.socialapp.service.ThreadPostService;
-import di.uoa.gr.m151.socialapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

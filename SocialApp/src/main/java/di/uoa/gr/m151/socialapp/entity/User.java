@@ -46,6 +46,7 @@ public class User {
                     CascadeType.DETACH, CascadeType.REFRESH})
     private Collection<FeedPost> feedPosts;*/
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "sender",
             cascade = CascadeType.ALL,
@@ -53,6 +54,7 @@ public class User {
     )
     private Collection<Message> sentMessages;
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "receiver",
             cascade = CascadeType.ALL,

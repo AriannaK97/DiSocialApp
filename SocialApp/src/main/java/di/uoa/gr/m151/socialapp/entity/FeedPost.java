@@ -38,7 +38,7 @@ public class FeedPost {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private Set<FeedReaction> userReactions;
+    private Collection<FeedReaction> userReactions;
 
     public void addUserReaction(User user, Integer reactionType) {
         FeedReaction feedReaction = new FeedReaction(user, this, reactionType);

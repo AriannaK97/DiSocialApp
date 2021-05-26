@@ -35,7 +35,7 @@ public class ChatServiceImpl implements ChatService{
         message.setReceiver(userService.findByUserName(messageDTO.getRecipient()));
         message.setTimestamp(new Timestamp(System.currentTimeMillis()));
 
-        return messageRepository.save(message) != null ? true : false;
+        return messageRepository.save(message) != null;
 
 
     }

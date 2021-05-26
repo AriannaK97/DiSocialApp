@@ -1,6 +1,7 @@
 package di.uoa.gr.m151.socialapp.service;
 
 import di.uoa.gr.m151.socialapp.DTO.FeedPostDTO;
+import di.uoa.gr.m151.socialapp.DTO.FeedReactionDTO;
 import di.uoa.gr.m151.socialapp.entity.FeedPost;
 import di.uoa.gr.m151.socialapp.entity.FeedReaction;
 import di.uoa.gr.m151.socialapp.entity.User;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,12 +53,51 @@ public class FeedServiceImpl implements FeedService{
     }
 
     @Override
-    public List<FeedPostDTO> findAllPostsDTO(String username) {
-        //todo fix return with dto
-        User currentUser = userService.findByUserName(username);
-        feedReactionRepository.findFeedReactionByUser(currentUser);
-        //return feedPostRepository.findFeedHistory();
-        return null;
+    public List<FeedPostDTO> retrieveFeed(String username) {
+        List<FeedPost> feedPostList = feedPostRepository.findAll();
+        List<FeedPostDTO> feedList = new ArrayList<FeedPostDTO>();
+
+        for (FeedPost feedPost : feedPostList) {
+            FeedPostDTO dto = new FeedPostDTO();
+            dto.setPostTime(feedPost.getPostTime());
+            dto.setContent(feedPost.getContent());
+            dto.setPostId(feedPost.getId());
+            dto.setUsername(feedPost.getUser().getUsername());
+            List<FeedReactionDTO> reactionList = new ArrayList<FeedReactionDTO>();
+            for (FeedReaction feedReaction : feedPost.getUserReactions()) {
+                FeedReactionDTO feedReactionDTO = new FeedReactionDTO();
+                feedReactionDTO.setPostId(feedReaction.getFeedPost().getId());
+                feedReactionDTO.setUsername(feedReaction.getUser().getUsername());
+                feedReactionDTO.setReactionType(feedReaction.getReactionType());
+                reactionList.add(feedReactionDTO);
+            }
+            dto.setUserReactions(reactionList);
+            feedList.add(dto);
+        }
+        return feedList;
+    }
+
+    @Override
+    public boolean saveFeedPostReaction(FeedReactionDTO feedReactionDTO){
+        FeedPost feedPost = findById(feedReactionDTO.getPostId());
+        User reactingUser = userService.findByUserName(feedReactionDTO.getUsername());
+
+        if (feedPost == null || reactingUser == null) {
+            return false;
+        }
+        /**
+         * reaction '1' is the default reaction value for an existing reaction in the post
+         * */
+/*        if(feedReactionDTO.getReactionType() == 1)
+            feedPost.addUserReaction(reactingUser, feedReactionDTO.getReactionType());
+        else
+            feedPost.removeUserReaction(reactingUser);*/
+        feedPost.addUserReaction(reactingUser, feedReactionDTO.getReactionType());
+        return  feedPostRepository.save(feedPost) != null;
+
+
+
+        //return feedPost.getUserReactions();
     }
 
 }
