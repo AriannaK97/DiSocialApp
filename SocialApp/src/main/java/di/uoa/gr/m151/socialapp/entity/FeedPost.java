@@ -6,10 +6,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Data
@@ -38,7 +35,8 @@ public class FeedPost {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private Collection<FeedReaction> userReactions;
+    private Set<FeedReaction> userReactions = new HashSet<FeedReaction>();
+
 
     public void addUserReaction(User user, Integer reactionType) {
         FeedReaction feedReaction = new FeedReaction(user, this, reactionType);

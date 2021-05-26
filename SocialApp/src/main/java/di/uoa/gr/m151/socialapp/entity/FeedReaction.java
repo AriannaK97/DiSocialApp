@@ -39,5 +39,24 @@ public class FeedReaction {
         this.id = new FeedReactionId(user.getId(), feedPost.getId());
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (!(obj instanceof FeedReaction))
+            return false;
+        if (obj == this)
+            return true;
+        FeedReaction reactionObject = ((FeedReaction) obj);
+
+        return this.getFeedPost().getId() == reactionObject.getFeedPost().getId()
+                && this.getUser().getUsername().equals(reactionObject.getUser().getUsername());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getId().getUserId().intValue();
+    }
+
 
 }
