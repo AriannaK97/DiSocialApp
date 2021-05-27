@@ -103,6 +103,7 @@ public class FeedServiceImpl implements FeedService{
                 dto.setScore(complexScore);
                 dto.setPostTime(pageRating.getPage().getLastUpdated());
                 dto.setPostId(pageRating.getPage().getId());
+                dto.setPageTitle(pageRating.getPage().getTitle());
                 //feedQueue.add(dto);
                 feedList.add(dto);
             }

@@ -23,7 +23,7 @@ public class    FeedPostDTO {
 
     String username;
 
-    String threadTitle;
+    String pageTitle;
 
     int score;
 
