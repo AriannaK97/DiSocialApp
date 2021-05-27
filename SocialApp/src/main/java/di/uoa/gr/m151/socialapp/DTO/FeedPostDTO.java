@@ -6,15 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FeedPostDTO {
+public class    FeedPostDTO {
     UUID postId;
 
     String content;
@@ -26,6 +23,13 @@ public class FeedPostDTO {
 
     String username;
 
+    String threadTitle;
+
+    int score;
+
    // Integer currentUserReaction;
+
+
+
 
 }

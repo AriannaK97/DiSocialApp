@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
@@ -24,6 +25,9 @@ public class ThreadPost {
 
     @Column(name = "content")
     String content;
+
+    @Column(name="timestamp")
+    private Timestamp timestamp;
 
     @ManyToOne
     @JoinColumn(name = "user_Id")

@@ -8,6 +8,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
@@ -27,6 +28,9 @@ public class Page {
     @Column(name = "title")
     @NotNull
     String title;
+
+    @Column(name = "last_updated")
+    private Timestamp lastUpdated;
 
     @OneToMany(mappedBy = "page",
             cascade = CascadeType.ALL,

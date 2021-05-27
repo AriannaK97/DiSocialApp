@@ -14,6 +14,7 @@ import di.uoa.gr.m151.socialapp.repository.ThreadPostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
@@ -72,6 +73,12 @@ public class ForumServiceImpl implements ForumService {
 
         threadPost.setCreator(threadCreator);
         threadPost.setThread(thread);
+        threadPost.setTimestamp(new Timestamp(System.currentTimeMillis()));
+
+        Page threadPostPage = thread.getPage();
+
+        threadPostPage.setLastUpdated(threadPost.getTimestamp());
+        pageRepository.save(threadPostPage);
 
         return  threadPostRepository.save(threadPost);
     }

@@ -2,22 +2,23 @@ package di.uoa.gr.m151.socialapp.service;
 
 import di.uoa.gr.m151.socialapp.DTO.FeedPostDTO;
 import di.uoa.gr.m151.socialapp.DTO.FeedReactionDTO;
-import di.uoa.gr.m151.socialapp.entity.FeedPost;
-import di.uoa.gr.m151.socialapp.entity.FeedReaction;
-import di.uoa.gr.m151.socialapp.entity.User;
+import di.uoa.gr.m151.socialapp.Helper.FeedPostDTOComparator;
+import di.uoa.gr.m151.socialapp.Helper.InitialDummyScoringStrategy;
+import di.uoa.gr.m151.socialapp.Helper.ScoringStrategy;
+import di.uoa.gr.m151.socialapp.entity.*;
 import di.uoa.gr.m151.socialapp.repository.FeedPostRepository;
 import di.uoa.gr.m151.socialapp.repository.FeedReactionRepository;
-import di.uoa.gr.m151.socialapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class FeedServiceImpl implements FeedService{
+
+    static int defaultFeedPostScore = 7;
 
     @Autowired
     FeedPostRepository feedPostRepository;
@@ -38,6 +39,10 @@ public class FeedServiceImpl implements FeedService{
 
         User postUser = userService.findByUserName(feedPostDTO.getUsername());
 
+        if (postUser == null) {
+            return null;
+        }
+
         FeedPost feedPost = new FeedPost();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         feedPost.setPostTime(timestamp);
@@ -53,9 +58,15 @@ public class FeedServiceImpl implements FeedService{
     }
 
     @Override
-    public List<FeedPostDTO> retrieveFeed(String username) {
+    public Collection<FeedPostDTO> retrieveFeed(String username) {
         List<FeedPost> feedPostList = feedPostRepository.findAll();
         List<FeedPostDTO> feedList = new ArrayList<FeedPostDTO>();
+
+/*        PriorityQueue<FeedPostDTO> feedQueue = new PriorityQueue<FeedPostDTO>
+                (50, new FeedPostDTOComparator());*/
+
+        //feedPostList.remove(0);
+        ScoringStrategy scoringStrategy = new InitialDummyScoringStrategy();
 
         for (FeedPost feedPost : feedPostList) {
             FeedPostDTO dto = new FeedPostDTO();
@@ -63,6 +74,7 @@ public class FeedServiceImpl implements FeedService{
             dto.setContent(feedPost.getContent());
             dto.setPostId(feedPost.getId());
             dto.setUsername(feedPost.getUser().getUsername());
+            dto.setScore(scoringStrategy.calculateScore(defaultFeedPostScore, feedPost.getPostTime()));
             List<FeedReactionDTO> reactionList = new ArrayList<FeedReactionDTO>();
             for (FeedReaction feedReaction : feedPost.getUserReactions()) {
                 FeedReactionDTO feedReactionDTO = new FeedReactionDTO();
@@ -72,10 +84,36 @@ public class FeedServiceImpl implements FeedService{
                 reactionList.add(feedReactionDTO);
             }
             dto.setUserReactions(reactionList);
+            //feedQueue.add(dto);
             feedList.add(dto);
         }
+
+        User user = userService.findByUserName(username);
+
+        if (user == null) {
+            return null;
+        }
+
+        for (UserPageRating pageRating : user.getPageRatings()) {
+
+            int complexScore = scoringStrategy.calculateScore(
+                    pageRating.getRating(), pageRating.getPage().getLastUpdated());
+            if (complexScore > 0) {
+                FeedPostDTO dto = new FeedPostDTO();
+                dto.setScore(complexScore);
+                dto.setPostTime(pageRating.getPage().getLastUpdated());
+                dto.setPostId(pageRating.getPage().getId());
+                //feedQueue.add(dto);
+                feedList.add(dto);
+            }
+
+        }
+        feedList.sort(new FeedPostDTOComparator());
+        //System.out.println(feedQueue);
         return feedList;
     }
+
+
 
     @Override
     public boolean saveFeedPostReaction(FeedReactionDTO feedReactionDTO){

@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -23,6 +24,7 @@ public class ForumThread {
 
     @Column(name = "title")
     private String title;
+
 
     @ManyToOne
     @JoinColumn(name = "page_id")

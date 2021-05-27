@@ -7,6 +7,7 @@ import di.uoa.gr.m151.socialapp.service.FeedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -24,7 +25,8 @@ public class FeedController {
 
 
     @GetMapping("/newsfeed/{username}")
-    public List<FeedPostDTO> showFeed(@PathVariable String username){
+    public Collection<FeedPostDTO> showFeed(@PathVariable String username){
+
         return feedService.retrieveFeed(username);
     }
 

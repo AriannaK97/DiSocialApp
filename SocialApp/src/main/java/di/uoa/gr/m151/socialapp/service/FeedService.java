@@ -5,6 +5,7 @@ import di.uoa.gr.m151.socialapp.DTO.FeedReactionDTO;
 import di.uoa.gr.m151.socialapp.entity.FeedPost;
 import di.uoa.gr.m151.socialapp.entity.FeedReaction;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,7 +16,7 @@ public interface FeedService {
 
     List<FeedPost> findAllPosts();
 
-    List<FeedPostDTO> retrieveFeed(String username);
+    Collection<FeedPostDTO> retrieveFeed(String username);
 
     public boolean saveFeedPostReaction(FeedReactionDTO feedReactionDTO);
 
