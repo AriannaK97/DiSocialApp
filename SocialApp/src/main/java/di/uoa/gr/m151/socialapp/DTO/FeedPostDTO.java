@@ -11,7 +11,7 @@ import java.util.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class    FeedPostDTO {
+public class FeedPostDTO {
     UUID postId;
 
     String content;
@@ -25,9 +25,9 @@ public class    FeedPostDTO {
 
     String pageTitle;
 
-    int score;
+    Integer score;
 
-   // Integer currentUserReaction;
+    Integer currentUserReaction;
 
 
 

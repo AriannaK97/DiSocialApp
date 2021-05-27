@@ -80,6 +80,9 @@ public class FeedServiceImpl implements FeedService{
                 FeedReactionDTO feedReactionDTO = new FeedReactionDTO();
                 feedReactionDTO.setPostId(feedReaction.getFeedPost().getId());
                 feedReactionDTO.setUsername(feedReaction.getUser().getUsername());
+                if (feedReaction.getUser().getUsername().equals(username)) {
+                    dto.setCurrentUserReaction(feedReaction.getReactionType());
+                }
                 feedReactionDTO.setReactionType(feedReaction.getReactionType());
                 reactionList.add(feedReactionDTO);
             }
