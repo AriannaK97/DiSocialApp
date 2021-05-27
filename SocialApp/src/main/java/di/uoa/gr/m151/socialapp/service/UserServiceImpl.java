@@ -80,19 +80,41 @@ public class UserServiceImpl implements UserService {
 		userDTO.setLastName(user.getLastName());
 		userDTO.setPhone(user.getPhone());
 
-		List<PageRatingDTO> ratingsList = new ArrayList<PageRatingDTO>();
-		for (UserPageRating rating : user.getPageRatings()) {
-			PageRatingDTO dto = new PageRatingDTO();
-			dto.setUsername(user.getUsername());
-			dto.setPageId(rating.getPage().getId());
-			dto.setRating(rating.getRating());
-			dto.setPageTitle(rating.getPage().getTitle());
-			ratingsList.add(dto);
-		}
-
-		userDTO.setPageRatings(ratingsList);
 		return userDTO;
 
+	}
+
+	public UserDTO fillEnhancedUserDTO(User user, Boolean includeRatings) {
+		UserDTO userDTO = fillUserDTO(user);
+
+		if (includeRatings) {
+			List<PageRatingDTO> ratingsList = new ArrayList<PageRatingDTO>();
+			for (UserPageRating rating : user.getPageRatings()) {
+				PageRatingDTO dto = new PageRatingDTO();
+				dto.setUsername(user.getUsername());
+				dto.setPageId(rating.getPage().getId());
+				dto.setRating(rating.getRating());
+				dto.setPageTitle(rating.getPage().getTitle());
+				ratingsList.add(dto);
+			}
+			userDTO.setPageRatings(ratingsList);
+		}
+
+		return userDTO;
+	}
+
+	@Override
+	public List<UserDTO> searchUsers(String usernamePart) {
+
+		List<User> userList = userRepository.findByUsernameContaining(usernamePart);
+		List<UserDTO> dtoList = new ArrayList<UserDTO>();
+
+		for (User user : userList) {
+			UserDTO dto = fillUserDTO(user);
+			dtoList.add(dto);
+		}
+
+		return dtoList;
 	}
 
 	@Override

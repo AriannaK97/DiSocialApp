@@ -18,6 +18,10 @@ public interface UserService extends UserDetailsService {
 
 	boolean userExists(String username);
 
-	public UserDTO fillUserDTO(User user);
+	UserDTO fillUserDTO(User user);
+
+	UserDTO fillEnhancedUserDTO(User user, Boolean includeRatings);
+
+	List<UserDTO> searchUsers(String usernamePart);
 
 }
