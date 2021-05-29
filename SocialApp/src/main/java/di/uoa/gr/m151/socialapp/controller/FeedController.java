@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/feed")
@@ -32,8 +33,14 @@ public class FeedController {
 
 
     @PostMapping("/reaction")
-    public boolean addUserReactionTest(@RequestBody FeedReactionDTO feedReactionDTO){
+    public boolean addUserReaction(@RequestBody FeedReactionDTO feedReactionDTO){
         return feedService.saveFeedPostReaction(feedReactionDTO);
+    }
+
+    @DeleteMapping("/reaction")
+    public boolean removeUserReaction(@RequestParam UUID postId, @RequestParam String username) {
+        System.out.println(postId + " " +  username);
+        return feedService.removePostReaction(postId, username);
     }
 
 }

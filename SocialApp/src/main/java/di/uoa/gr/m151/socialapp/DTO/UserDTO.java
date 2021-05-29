@@ -19,6 +19,8 @@ public class UserDTO {
     String email;
     
     String phone;
+
+    String color;
     
     Collection<PageRatingDTO> pageRatings;
 

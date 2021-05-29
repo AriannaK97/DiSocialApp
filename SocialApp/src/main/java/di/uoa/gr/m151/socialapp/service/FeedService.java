@@ -20,4 +20,6 @@ public interface FeedService {
 
     public boolean saveFeedPostReaction(FeedReactionDTO feedReactionDTO);
 
+    public boolean removePostReaction(UUID feedPostId, String username );
+
 }

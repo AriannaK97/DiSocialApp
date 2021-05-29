@@ -43,7 +43,7 @@ public class FeedPost {
         userReactions.add(feedReaction);
     }
 
-    public void removeUserReaction(User user) {
+    public boolean removeUserReaction(User user) {
 
 /*        userReactions.removeIf(userReaction -> userReaction.getUser().equals(user)
                 && userReaction.getFeedPost().equals(this));*/
@@ -57,8 +57,10 @@ public class FeedPost {
                 iterator.remove();
                 feedReaction.setUser(null);
                 feedReaction.setFeedPost(null);
+                return true;
             }
         }
+        return false;
     }
 
 }

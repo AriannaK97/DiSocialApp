@@ -146,4 +146,22 @@ public class FeedServiceImpl implements FeedService{
         //return feedPost.getUserReactions();
     }
 
+
+    public boolean removePostReaction(UUID feedPostId, String username ) {
+
+        FeedPost feedPost = feedPostRepository.findById(feedPostId).orElse(null);
+        User user = userService.findByUserName(username);
+
+        if (feedPost == null || user == null) {
+            return false;
+        }
+
+        if (feedPost.removeUserReaction(user)) {
+            feedPostRepository.save(feedPost);
+            return true;
+        }
+        return false;
+
+    }
+
 }

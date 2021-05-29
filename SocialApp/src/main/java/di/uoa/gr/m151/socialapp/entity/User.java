@@ -37,6 +37,9 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "color")
+    private String color;
+
     @OneToMany(mappedBy = "user",
             cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})

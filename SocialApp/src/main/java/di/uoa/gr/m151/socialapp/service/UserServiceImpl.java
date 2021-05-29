@@ -17,10 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,6 +57,24 @@ public class UserServiceImpl implements UserService {
 	public User save(User user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_SIMPLE")));
+
+		if (user.getColor() == null || user.getColor().isEmpty()) {
+			Random rand = new Random();
+			int randomColor = rand.nextInt(5);
+			switch (randomColor) {
+				case 0:
+					user.setColor("cornflowerblue");
+					break;
+				case 1:
+					user.setColor("black");
+				case 2:
+					user.setColor("darkgreen");
+				case 3:
+					user.setColor("rebeccapurple");
+				case 4:
+					user.setColor("yellow");
+			}
+		}
 
 		 // save user in the database
 		return userRepository.save(user);
