@@ -1,11 +1,14 @@
 package di.uoa.gr.m151.socialapp.DTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import di.uoa.gr.m151.socialapp.entity.FeedReaction;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Data
@@ -17,7 +20,10 @@ public class FeedPostDTO {
     String content;
 
     //Timestamp postTime;
-    Date postTime;
+    String postTime;
+
+    @JsonIgnore
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
     Collection<FeedReactionDTO> userReactions;
 

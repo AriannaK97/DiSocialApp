@@ -1,11 +1,11 @@
 package di.uoa.gr.m151.socialapp.service;
 
 
+import di.uoa.gr.m151.socialapp.DTO.FeedPostDTO;
+import di.uoa.gr.m151.socialapp.DTO.FeedReactionDTO;
 import di.uoa.gr.m151.socialapp.DTO.PageRatingDTO;
 import di.uoa.gr.m151.socialapp.DTO.UserDTO;
-import di.uoa.gr.m151.socialapp.entity.Role;
-import di.uoa.gr.m151.socialapp.entity.User;
-import di.uoa.gr.m151.socialapp.entity.UserPageRating;
+import di.uoa.gr.m151.socialapp.entity.*;
 import di.uoa.gr.m151.socialapp.repository.RoleRepository;
 import di.uoa.gr.m151.socialapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
 
 	}
 
-	public UserDTO fillEnhancedUserDTO(User user, Boolean includeRatings) {
+	public UserDTO fillEnhancedUserDTO(User user, Boolean includeRatings, Boolean includeFeedPosts) {
 		UserDTO userDTO = fillUserDTO(user);
 
 		if (includeRatings) {
@@ -98,6 +98,33 @@ public class UserServiceImpl implements UserService {
 				ratingsList.add(dto);
 			}
 			userDTO.setPageRatings(ratingsList);
+		}
+
+		if (includeFeedPosts) {
+
+			List<FeedPostDTO> feedPostList = new ArrayList<>();
+
+			for (FeedPost feedPost : user.getFeedPosts()) {
+				FeedPostDTO dto = new FeedPostDTO();
+				dto.setPostTime(dto.getDateFormat().format(feedPost.getPostTime()));
+				dto.setContent(feedPost.getContent());
+				dto.setPostId(feedPost.getId());
+				dto.setUsername(feedPost.getUser().getUsername());
+				List<FeedReactionDTO> reactionList = new ArrayList<FeedReactionDTO>();
+				for (FeedReaction feedReaction : feedPost.getUserReactions()) {
+					FeedReactionDTO feedReactionDTO = new FeedReactionDTO();
+					feedReactionDTO.setPostId(feedReaction.getFeedPost().getId());
+					feedReactionDTO.setUsername(feedReaction.getUser().getUsername());
+					if (feedReaction.getUser().getUsername().equals(user.getUsername())) {
+						dto.setCurrentUserReaction(feedReaction.getReactionType());
+					}
+					feedReactionDTO.setReactionType(feedReaction.getReactionType());
+					reactionList.add(feedReactionDTO);
+				}
+				dto.setUserReactions(reactionList);
+				feedPostList.add(dto);
+			}
+			userDTO.setUserFeedPosts(feedPostList);
 		}
 
 		return userDTO;

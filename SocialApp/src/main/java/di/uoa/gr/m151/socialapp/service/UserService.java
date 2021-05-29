@@ -20,7 +20,7 @@ public interface UserService extends UserDetailsService {
 
 	UserDTO fillUserDTO(User user);
 
-	UserDTO fillEnhancedUserDTO(User user, Boolean includeRatings);
+	public UserDTO fillEnhancedUserDTO(User user, Boolean includeRatings, Boolean includeFeedPosts);
 
 	List<UserDTO> searchUsers(String usernamePart);
 

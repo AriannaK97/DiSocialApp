@@ -42,10 +42,10 @@ public class User {
                     CascadeType.DETACH, CascadeType.REFRESH})
     private Collection<UserActionLog> logList;
 
-/*    @OneToMany(mappedBy = "user",
+    @OneToMany(mappedBy = "user",
             cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})
-    private Collection<FeedPost> feedPosts;*/
+    private Collection<FeedPost> feedPosts;
 
     @JsonIgnore
     @OneToMany(

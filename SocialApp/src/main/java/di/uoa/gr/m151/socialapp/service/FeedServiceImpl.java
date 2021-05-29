@@ -12,6 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -70,7 +74,7 @@ public class FeedServiceImpl implements FeedService{
 
         for (FeedPost feedPost : feedPostList) {
             FeedPostDTO dto = new FeedPostDTO();
-            dto.setPostTime(feedPost.getPostTime());
+            dto.setPostTime(dto.getDateFormat().format(feedPost.getPostTime()));
             dto.setContent(feedPost.getContent());
             dto.setPostId(feedPost.getId());
             dto.setUsername(feedPost.getUser().getUsername());
@@ -104,7 +108,7 @@ public class FeedServiceImpl implements FeedService{
             if (complexScore > 0) {
                 FeedPostDTO dto = new FeedPostDTO();
                 dto.setScore(complexScore);
-                dto.setPostTime(pageRating.getPage().getLastUpdated());
+                dto.setPostTime(dto.getDateFormat().format(pageRating.getPage().getLastUpdated()));
                 dto.setPostId(pageRating.getPage().getId());
                 dto.setPageTitle(pageRating.getPage().getTitle());
                 //feedQueue.add(dto);
