@@ -9,7 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -48,6 +55,31 @@ public class ChatServiceImpl implements ChatService{
 
         return messageRepository.findChatHistory(user, friend);
 
+    }
+
+    @Override
+    public List<MessageDTO> updateChatHistory(String user, String friend, String date)  {
+
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        SimpleDateFormat format = new SimpleDateFormat(
+                "yyyy-MM-dd'T'HH:mm:ss.SSS");
+
+        try {
+            Date checkDate = format.parse(date);
+            LocalDateTime localDateTime = Instant.ofEpochMilli(checkDate.getTime())
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();
+            localDateTime = localDateTime.plusHours(3);
+            checkDate = java.util.Date.from(localDateTime
+                    .atZone(ZoneId.systemDefault())
+                    .toInstant());
+            return  messageRepository.findChatHistory(user, friend, checkDate);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
     }
 
     public List<UserDTO> findAllUsers() {

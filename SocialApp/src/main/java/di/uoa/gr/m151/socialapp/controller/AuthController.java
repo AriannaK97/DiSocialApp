@@ -48,7 +48,7 @@ public class AuthController {
 
         User responseUser = userService.findByUserName(user.getUsername());
 
-        UserDTO userDTO = userService.fillEnhancedUserDTO(responseUser, true, true);
+        UserDTO userDTO = userService.fillEnhancedUserDTO(responseUser, true, false);
 
 
         return ResponseEntity.ok(new JwtTokenResponse(token, userDTO));
@@ -76,6 +76,17 @@ public class AuthController {
                 .badRequest()
                 .body("Username or password are empty. Cannot create user");
 
+    }
+
+
+    @GetMapping("/profile/{username}")
+    public ResponseEntity<?> userProfile(@PathVariable String username) {
+        User user = userService.findByUserName(username);
+        if (user != null) {
+            UserDTO userDTO = userService.fillEnhancedUserDTO(user,false, true);
+            return ResponseEntity.ok(userDTO);
+        }
+        return ResponseEntity.badRequest().body("User does not exist");
     }
 
 

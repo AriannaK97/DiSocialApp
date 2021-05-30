@@ -3,6 +3,7 @@ package di.uoa.gr.m151.socialapp.service;
 import di.uoa.gr.m151.socialapp.DTO.MessageDTO;
 import di.uoa.gr.m151.socialapp.DTO.UserDTO;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ChatService {
@@ -10,6 +11,8 @@ public interface ChatService {
     boolean saveAndSendMessage(MessageDTO messageDTO);
 
     List<MessageDTO> retrieveChatHistory(String user, String friend);
+
+    List<MessageDTO> updateChatHistory(String user, String friend, String date);
 
     public List<UserDTO> findAllUsers();
 
