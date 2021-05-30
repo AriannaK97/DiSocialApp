@@ -3,6 +3,7 @@ package di.uoa.gr.m151.socialapp.config;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -57,6 +58,9 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                 }
             } catch (JWTDecodeException jwtExc) {
                 jwtExc.printStackTrace();
+            }
+            catch (TokenExpiredException exception) {
+                exception.printStackTrace();
             }
             catch (Exception exception) {
                 exception.printStackTrace();

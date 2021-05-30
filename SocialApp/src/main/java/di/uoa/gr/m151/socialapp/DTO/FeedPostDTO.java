@@ -29,6 +29,8 @@ public class FeedPostDTO {
 
     String username;
 
+    String userColor;
+
     String pageTitle;
 
     Integer score;

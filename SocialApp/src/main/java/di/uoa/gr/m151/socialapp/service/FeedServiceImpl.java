@@ -78,6 +78,7 @@ public class FeedServiceImpl implements FeedService{
             dto.setContent(feedPost.getContent());
             dto.setPostId(feedPost.getId());
             dto.setUsername(feedPost.getUser().getUsername());
+            dto.setUserColor(feedPost.getUser().getColor());
             dto.setScore(scoringStrategy.calculateScore(defaultFeedPostScore, feedPost.getPostTime()));
             List<FeedReactionDTO> reactionList = new ArrayList<FeedReactionDTO>();
             for (FeedReaction feedReaction : feedPost.getUserReactions()) {
