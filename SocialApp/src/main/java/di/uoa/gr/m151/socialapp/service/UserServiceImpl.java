@@ -94,6 +94,7 @@ public class UserServiceImpl implements UserService {
 		userDTO.setFirstName(user.getFirstName());
 		userDTO.setLastName(user.getLastName());
 		userDTO.setPhone(user.getPhone());
+		userDTO.setColor(user.getColor());
 
 		return userDTO;
 
