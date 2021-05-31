@@ -43,11 +43,13 @@ public class User {
     @OneToMany(mappedBy = "user",
             cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})
+    @JsonIgnore
     private Collection<UserActionLog> logList;
 
     @OneToMany(mappedBy = "user",
             cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})
+    @JsonIgnore
     private Collection<FeedPost> feedPosts;
 
     @JsonIgnore
@@ -70,6 +72,7 @@ public class User {
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "social_user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JsonIgnore
     private Collection<Role> roles;
 
     @ManyToMany(mappedBy = "upVotes")
@@ -81,6 +84,7 @@ public class User {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JsonIgnore
     private Set<UserPageRating> pageRatings;
 
     public void addPageRating(Page page, Integer rating) {
