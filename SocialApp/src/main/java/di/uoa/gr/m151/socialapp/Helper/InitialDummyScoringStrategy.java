@@ -16,7 +16,7 @@ public class InitialDummyScoringStrategy implements ScoringStrategy{
         long diffInMS = timestamp.getTime() - updateTime.getTime();
         long diffInDays = evaluationTimeUnit.convert(diffInMS, TimeUnit.MILLISECONDS);
 
-        int complexScore = rating - (int) diffInDays;
+        int complexScore = (rating * 2) - (int) diffInDays;
 
         if (complexScore <= 0) {
             complexScore = 1;

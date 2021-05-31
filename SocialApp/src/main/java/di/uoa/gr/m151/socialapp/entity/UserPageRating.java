@@ -29,7 +29,7 @@ public class UserPageRating {
 
     @Column(name = "rating")
     @Min(value = 0, message = "Rates are between 0 and 5")
-    @Max(value = 10, message = "Rates are between 0 and 10")
+    @Max(value = 5, message = "Rates are between 0 and 5")
     Integer rating;
 
 

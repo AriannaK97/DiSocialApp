@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class FeedServiceImpl implements FeedService{
 
-    static int defaultFeedPostScore = 7;
+    static int defaultFeedPostScore = 4;
 
     @Autowired
     FeedPostRepository feedPostRepository;
