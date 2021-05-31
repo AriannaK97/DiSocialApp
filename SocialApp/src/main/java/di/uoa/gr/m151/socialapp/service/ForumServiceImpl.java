@@ -144,6 +144,7 @@ public class ForumServiceImpl implements ForumService {
                 if (pageRating.getPage().getId() == page.getId()
                     && pageRating.getUser().getId() == currrentUser.getId()) {
                     dto.setCurrentUserRating(pageRating.getRating());
+                    dtoList.add(dto);
                     break;
                 }
                 dtoList.add(dto);
