@@ -1,9 +1,6 @@
 package di.uoa.gr.m151.socialapp.controller;
 
-import di.uoa.gr.m151.socialapp.DTO.ForumThreadDTO;
-import di.uoa.gr.m151.socialapp.DTO.PageRatingDTO;
-import di.uoa.gr.m151.socialapp.DTO.ThreadPostDTO;
-import di.uoa.gr.m151.socialapp.DTO.ThreadVoteDTO;
+import di.uoa.gr.m151.socialapp.DTO.*;
 import di.uoa.gr.m151.socialapp.entity.ForumThread;
 import di.uoa.gr.m151.socialapp.entity.Page;
 import di.uoa.gr.m151.socialapp.entity.ThreadPost;
@@ -64,8 +61,8 @@ public class ForumController {
     }
 
     @GetMapping("/pages")
-    public List<Page> retrievePages() {
-        return forumService.findAllPages();
+    public List<PageDTO> retrievePages(@RequestParam String currentUsername) {
+        return forumService.findAllPages(currentUsername);
     }
 
     @GetMapping("/page/{pageId}/threads")
@@ -75,9 +72,9 @@ public class ForumController {
     }
 
     @GetMapping("/page/thread/{threadId}/threadposts")
-    public List<ThreadPost> retrieveThreadPosts(@PathVariable UUID threadId) {
+    public List<ThreadPostDTO> retrieveThreadPosts(@PathVariable UUID threadId,@RequestParam String currentUsername) {
 
-        return forumService.findAllThreadsPostsByThread(threadId);
+        return forumService.findAllThreadsPostsByThread(threadId, currentUsername);
     }
 
 
