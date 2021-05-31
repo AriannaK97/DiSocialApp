@@ -1,13 +1,7 @@
 package di.uoa.gr.m151.socialapp.service;
 
-import di.uoa.gr.m151.socialapp.DTO.ForumThreadDTO;
-import di.uoa.gr.m151.socialapp.DTO.PageRatingDTO;
-import di.uoa.gr.m151.socialapp.DTO.ThreadPostDTO;
-import di.uoa.gr.m151.socialapp.DTO.ThreadVoteDTO;
-import di.uoa.gr.m151.socialapp.entity.ForumThread;
-import di.uoa.gr.m151.socialapp.entity.Page;
-import di.uoa.gr.m151.socialapp.entity.ThreadPost;
-import di.uoa.gr.m151.socialapp.entity.User;
+import di.uoa.gr.m151.socialapp.DTO.*;
+import di.uoa.gr.m151.socialapp.entity.*;
 import di.uoa.gr.m151.socialapp.repository.ForumThreadRepository;
 import di.uoa.gr.m151.socialapp.repository.PageRepository;
 import di.uoa.gr.m151.socialapp.repository.ThreadPostRepository;
@@ -15,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -131,8 +126,31 @@ public class ForumServiceImpl implements ForumService {
 
     //TODO: pagination
     @Override
-    public List<Page> findAllPages() {
-       return pageRepository.findAll();
+    public List<PageDTO> findAllPages(String currentUsername) {
+        User currrentUser;
+
+        if ((currrentUser = userService.findByUserName(currentUsername)) == null) {
+            return null;
+        }
+
+        List<Page> pageList = pageRepository.findAll();
+        List<PageDTO> dtoList = new ArrayList<PageDTO>();
+
+        for (Page page : pageList) {
+            PageDTO dto = new PageDTO();
+            dto.setTitle(page.getTitle());
+            dto.setPageId(page.getId());
+            for (UserPageRating pageRating : currrentUser.getPageRatings()) {
+                if (pageRating.getPage().getId() == page.getId()
+                    && pageRating.getUser().getId() == currrentUser.getId()) {
+                    dto.setCurrentUserRating(pageRating.getRating());
+                    break;
+                }
+                dtoList.add(dto);
+            }
+        }
+
+        return dtoList;
     }
 
     @Override
@@ -141,8 +159,32 @@ public class ForumServiceImpl implements ForumService {
     }
 
     @Override
-    public List<ThreadPost> findAllThreadsPostsByThread(UUID uuid) {
-        return threadPostRepository.findAllByThread_Id(uuid);
+    public List<ThreadPostDTO> findAllThreadsPostsByThread(UUID uuid, String currentUsername) {
+        List<ThreadPost> postList = threadPostRepository.findAllByThread_Id(uuid);
+        List<ThreadPostDTO> dtoList = new ArrayList<ThreadPostDTO>();
+
+        if (!userService.userExists(currentUsername)) {
+            return null;
+        }
+
+
+        for (ThreadPost threadPost : postList) {
+            ThreadPostDTO threadPostDTO = new ThreadPostDTO();
+            threadPostDTO.setUpVotes(new ArrayList<String>());
+            threadPostDTO.setThreadId(threadPost.getThread().getId());
+            threadPostDTO.setContent(threadPost.getContent());
+            threadPostDTO.setCreatorUsername(threadPost.getCreator().getUsername());
+            threadPostDTO.setCreatorColor(threadPost.getCreator().getColor());
+            threadPostDTO.setPostTime(threadPostDTO.getDateFormat().format(threadPost.getTimestamp()));
+            for (User user : threadPost.getUpVotes()) {
+                if (user.getUsername().equals(currentUsername)) {
+                    threadPostDTO.setCurrentUserReaction(true);
+                }
+                threadPostDTO.getUpVotes().add(user.getUsername());
+            }
+            dtoList.add(threadPostDTO);
+        }
+        return dtoList;
     }
 
 
