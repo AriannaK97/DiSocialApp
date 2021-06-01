@@ -6,6 +6,8 @@ import di.uoa.gr.m151.socialapp.entity.Message;
 import di.uoa.gr.m151.socialapp.entity.User;
 import di.uoa.gr.m151.socialapp.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -16,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -51,9 +54,11 @@ public class ChatServiceImpl implements ChatService{
     }
 
     @Override
-    public List<MessageDTO> retrieveChatHistory(String user, String friend) {
-
-        return messageRepository.findChatHistory(user, friend);
+    public List<MessageDTO> retrieveChatHistory(String user, String friend, int page) {
+        Pageable pageable = PageRequest.of(page,20);
+        List<MessageDTO> messageList =  messageRepository.findChatHistory(user, friend, pageable);
+        Collections.reverse(messageList);
+        return messageList;
 
     }
 
@@ -82,9 +87,9 @@ public class ChatServiceImpl implements ChatService{
         return null;
     }
 
-    public List<UserDTO> findAllUsers() {
+    public List<UserDTO> findAllUsers(Integer page) {
 
-        List<User> userList = userService.findAllUsers();
+        List<User> userList = userService.findAllUsers(page);
         List<UserDTO> dtoList = new ArrayList<UserDTO>();
 
         for (User user : userList) {

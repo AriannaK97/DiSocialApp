@@ -10,10 +10,10 @@ public interface ChatService {
 
     boolean saveAndSendMessage(MessageDTO messageDTO);
 
-    List<MessageDTO> retrieveChatHistory(String user, String friend);
+    List<MessageDTO> retrieveChatHistory(String user, String friend, int page);
 
     List<MessageDTO> updateChatHistory(String user, String friend, String date);
 
-    public List<UserDTO> findAllUsers();
+    public List<UserDTO> findAllUsers(Integer page);
 
 }

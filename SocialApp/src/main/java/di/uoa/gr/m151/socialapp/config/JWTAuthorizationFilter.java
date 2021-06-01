@@ -4,9 +4,13 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import di.uoa.gr.m151.socialapp.service.UserService;
+import di.uoa.gr.m151.socialapp.service.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -18,11 +22,15 @@ import java.util.ArrayList;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
+
     private JWTConstants jwtProperties;
 
-    public JWTAuthorizationFilter(AuthenticationManager authManager, JWTConstants jwtProperties) {
+    private UserService userService;
+
+    public JWTAuthorizationFilter(AuthenticationManager authManager, JWTConstants jwtProperties,UserService userService) {
         super(authManager);
         this.jwtProperties = jwtProperties;
+        this.userService = userService;
     }
 
     @Override
@@ -53,8 +61,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                     .verify(token.replace(jwtProperties.getTokenPrefix(), ""))
                     .getSubject();
                 if (user != null) {
-                    // new arraylist means authorities
-                    return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+                    UserDetails userDetails = userService.loadUserByUsername(user);
+                    return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 }
             } catch (JWTDecodeException jwtExc) {
                 jwtExc.printStackTrace();

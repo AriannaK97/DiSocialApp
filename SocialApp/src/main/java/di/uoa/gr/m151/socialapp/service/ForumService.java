@@ -4,6 +4,7 @@ import di.uoa.gr.m151.socialapp.DTO.*;
 import di.uoa.gr.m151.socialapp.entity.ForumThread;
 import di.uoa.gr.m151.socialapp.entity.Page;
 import di.uoa.gr.m151.socialapp.entity.ThreadPost;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.UUID;
@@ -32,7 +33,7 @@ public interface ForumService {
 
     List<ForumThread> findAllThreadsByPage(UUID uuid);
 
-    List<ThreadPostDTO> findAllThreadsPostsByThread(UUID uuid, String currentUsername);
+    List<ThreadPostDTO> findAllThreadsPostsByThread(UUID uuid, String currentUsername, Integer page);
 
     /*List<ForumThread> findAllPageThreads()*/
 

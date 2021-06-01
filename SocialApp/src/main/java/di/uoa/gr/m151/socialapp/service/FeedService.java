@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface FeedService {
     FeedPost findById(UUID id);
 
-    FeedPost saveFeedPost(FeedPostDTO feedPostDTO);
+    FeedPostDTO saveFeedPost(FeedPostDTO feedPostDTO);
 
     List<FeedPost> findAllPosts();
 

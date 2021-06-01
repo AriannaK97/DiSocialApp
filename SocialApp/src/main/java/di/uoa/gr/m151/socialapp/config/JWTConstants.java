@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class JWTConstants {
 
     private final String jwtSecret = "SecretKey";
-    private final Long jwtExpirationMs = 900000L;
+    private final Long jwtExpirationMs = 1900000L;
     private final String headerString = "Authorization";
     private final String tokenPrefix = "Bearer ";
     private final String loginUrl = "/api/auth/login";

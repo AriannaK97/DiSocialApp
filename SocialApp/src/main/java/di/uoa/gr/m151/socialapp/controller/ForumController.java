@@ -6,6 +6,7 @@ import di.uoa.gr.m151.socialapp.entity.Page;
 import di.uoa.gr.m151.socialapp.entity.ThreadPost;
 import di.uoa.gr.m151.socialapp.service.ForumService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,12 +19,14 @@ public class ForumController {
     @Autowired
     ForumService forumService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/page")
     public Page addPage(@RequestBody Page page) {
         return forumService.savePage(page);
     }
 
     @PostMapping("/page/pageRating")
+    @PreAuthorize("#pageRatingDTO.username == authentication.name")
     public Boolean addPageRating(@RequestBody PageRatingDTO pageRatingDTO) {
         return forumService.savePageRating(pageRatingDTO);
     }
@@ -35,11 +38,13 @@ public class ForumController {
 
 
     @PostMapping("/page/thread/threadPost")
+    @PreAuthorize("#dto.creatorUsername == authentication.name")
     public ThreadPost addThreadPost(@RequestBody ThreadPostDTO dto) {
         return forumService.saveThreadPost(dto);
     }
 
     @PostMapping("/page/thread/threadPost/upvote")
+    @PreAuthorize("#threadVoteDTO.username == authentication.name")
     public Boolean addUpVote(@RequestBody ThreadVoteDTO threadVoteDTO) {
         return forumService.saveThreadPostUpVote(threadVoteDTO);
     }
@@ -72,9 +77,14 @@ public class ForumController {
     }
 
     @GetMapping("/page/thread/{threadId}/threadposts")
-    public List<ThreadPostDTO> retrieveThreadPosts(@PathVariable UUID threadId,@RequestParam String currentUsername) {
+    public List<ThreadPostDTO> retrieveThreadPosts(@PathVariable UUID threadId, @RequestParam String currentUsername, @
+            RequestParam(required = false) Integer page) {
 
-        return forumService.findAllThreadsPostsByThread(threadId, currentUsername);
+        if (page == null ) {
+            page = 0;
+        }
+
+        return forumService.findAllThreadsPostsByThread(threadId, currentUsername, page);
     }
 
 

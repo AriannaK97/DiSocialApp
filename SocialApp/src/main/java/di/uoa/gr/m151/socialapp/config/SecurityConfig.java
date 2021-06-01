@@ -4,17 +4,15 @@ import di.uoa.gr.m151.socialapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -23,6 +21,10 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(
+        // securedEnabled = true,
+        // jsr250Enabled = true,
+        prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -31,49 +33,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JWTConstants jwtConstants;
 
-/*    @Autowired
-    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;*/
-
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-               /* .antMatchers("/home/**").permitAll()*/
-                /*.antMatchers(("/**")).permitAll();*/
-               /* .antMatchers("/api/test/**").permitAll()*/
-                .antMatchers("/feed/**").permitAll()
-                .antMatchers("/forum/**").permitAll()
-                .antMatchers("/chat/**").permitAll()
-                .antMatchers("/search/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
               /*  .addFilter(new JWTAuthenticationFilter(authenticationManager(),jwtConstants))*/
-                .addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtConstants));
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtConstants, userService));
 
 
         //http.addFilterBefore(new JWTAuthorizationFilter(authenticationManager(), jwtConstants), UsernamePasswordAuthenticationFilter.class);
     }
 
-
-/*    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/auth/signup").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
-                // this disables session creation on Spring Security
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    }*/
-
-/*    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
-    }*/
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
@@ -81,7 +55,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.applyPermitDefaultValues();
-        //corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:8081/**"));
         corsConfiguration.setAllowedMethods(Arrays.asList("GET","POST","DELETE"));
         source.registerCorsConfiguration("/**", corsConfiguration);
 

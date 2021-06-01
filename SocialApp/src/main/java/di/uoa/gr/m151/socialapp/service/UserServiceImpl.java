@@ -9,6 +9,8 @@ import di.uoa.gr.m151.socialapp.entity.*;
 import di.uoa.gr.m151.socialapp.repository.RoleRepository;
 import di.uoa.gr.m151.socialapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,8 +36,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public List<User> findAllUsers() {
-		return userRepository.findAll();
+	public List<User> findAllUsers(Integer page) {
+		Pageable pageable = PageRequest.of(page,20);
+		return userRepository.findAll(pageable).toList();
 	}
 
 	@Override

@@ -38,8 +38,21 @@ public class FeedServiceImpl implements FeedService{
         return feedPostRepository.findById(id).orElse(null);
     }
 
+    public FeedPostDTO fillSimpleFeedPostDTO(FeedPost feedPost) {
+
+        FeedPostDTO dto = new FeedPostDTO();
+        dto.setPostTime(dto.getDateFormat().format(feedPost.getPostTime()));
+        dto.setContent(feedPost.getContent());
+        dto.setPostId(feedPost.getId());
+        dto.setUsername(feedPost.getUser().getUsername());
+        dto.setUserColor(feedPost.getUser().getColor());
+
+        return dto;
+
+    }
+
     @Override
-    public FeedPost saveFeedPost(FeedPostDTO feedPostDTO) {
+    public FeedPostDTO saveFeedPost(FeedPostDTO feedPostDTO) {
 
         User postUser = userService.findByUserName(feedPostDTO.getUsername());
 
@@ -53,7 +66,12 @@ public class FeedServiceImpl implements FeedService{
         feedPost.setContent(feedPostDTO.getContent());
         feedPost.setUser(postUser);
 
-        return feedPostRepository.save(feedPost);
+        if ((feedPost = feedPostRepository.save(feedPost)) != null) {
+            return fillSimpleFeedPostDTO(feedPost);
+        }
+
+        return (feedPost = feedPostRepository.save(feedPost)) != null ? fillSimpleFeedPostDTO(feedPost)
+                : null;
     }
 
     @Override
@@ -73,12 +91,7 @@ public class FeedServiceImpl implements FeedService{
         ScoringStrategy scoringStrategy = new InitialDummyScoringStrategy();
 
         for (FeedPost feedPost : feedPostList) {
-            FeedPostDTO dto = new FeedPostDTO();
-            dto.setPostTime(dto.getDateFormat().format(feedPost.getPostTime()));
-            dto.setContent(feedPost.getContent());
-            dto.setPostId(feedPost.getId());
-            dto.setUsername(feedPost.getUser().getUsername());
-            dto.setUserColor(feedPost.getUser().getColor());
+            FeedPostDTO dto = fillSimpleFeedPostDTO(feedPost);
             dto.setScore(scoringStrategy.calculateScore(defaultFeedPostScore, feedPost.getPostTime()));
             List<FeedReactionDTO> reactionList = new ArrayList<FeedReactionDTO>();
             for (FeedReaction feedReaction : feedPost.getUserReactions()) {

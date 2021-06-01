@@ -6,6 +6,8 @@ import di.uoa.gr.m151.socialapp.repository.ForumThreadRepository;
 import di.uoa.gr.m151.socialapp.repository.PageRepository;
 import di.uoa.gr.m151.socialapp.repository.ThreadPostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -159,8 +161,9 @@ public class ForumServiceImpl implements ForumService {
     }
 
     @Override
-    public List<ThreadPostDTO> findAllThreadsPostsByThread(UUID uuid, String currentUsername) {
-        List<ThreadPost> postList = threadPostRepository.findAllByThread_Id(uuid);
+    public List<ThreadPostDTO> findAllThreadsPostsByThread(UUID uuid, String currentUsername, Integer page) {
+        Pageable pageable = PageRequest.of(page,20);
+        List<ThreadPost> postList = threadPostRepository.findAllByThread_Id(uuid,pageable);
         List<ThreadPostDTO> dtoList = new ArrayList<ThreadPostDTO>();
 
         if (!userService.userExists(currentUsername)) {
