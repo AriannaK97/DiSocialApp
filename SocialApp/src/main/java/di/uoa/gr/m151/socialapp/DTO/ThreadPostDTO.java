@@ -20,6 +20,8 @@ public class ThreadPostDTO {
 
         UUID threadId;
 
+        UUID postId;
+
         Collection<String> upVotes;
 
         String postTime;

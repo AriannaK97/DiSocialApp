@@ -171,6 +171,7 @@ public class ForumServiceImpl implements ForumService {
         for (ThreadPost threadPost : postList) {
             ThreadPostDTO threadPostDTO = new ThreadPostDTO();
             threadPostDTO.setUpVotes(new ArrayList<String>());
+            threadPostDTO.setPostId(threadPost.getId());
             threadPostDTO.setThreadId(threadPost.getThread().getId());
             threadPostDTO.setContent(threadPost.getContent());
             threadPostDTO.setCreatorUsername(threadPost.getCreator().getUsername());
