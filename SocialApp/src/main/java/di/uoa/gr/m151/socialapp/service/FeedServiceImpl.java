@@ -12,12 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class FeedServiceImpl implements FeedService{
@@ -84,10 +79,6 @@ public class FeedServiceImpl implements FeedService{
         List<FeedPost> feedPostList = feedPostRepository.findAll();
         List<FeedPostDTO> feedList = new ArrayList<FeedPostDTO>();
 
-/*        PriorityQueue<FeedPostDTO> feedQueue = new PriorityQueue<FeedPostDTO>
-                (50, new FeedPostDTOComparator());*/
-
-        //feedPostList.remove(0);
         ScoringStrategy scoringStrategy = new InitialDummyScoringStrategy();
 
         for (FeedPost feedPost : feedPostList) {
@@ -105,7 +96,6 @@ public class FeedServiceImpl implements FeedService{
                 reactionList.add(feedReactionDTO);
             }
             dto.setUserReactions(reactionList);
-            //feedQueue.add(dto);
             feedList.add(dto);
         }
 
@@ -125,13 +115,11 @@ public class FeedServiceImpl implements FeedService{
                 dto.setPostTime(dto.getDateFormat().format(pageRating.getPage().getLastUpdated()));
                 dto.setPostId(pageRating.getPage().getId());
                 dto.setPageTitle(pageRating.getPage().getTitle());
-                //feedQueue.add(dto);
                 feedList.add(dto);
             }
 
         }
         feedList.sort(new FeedPostDTOComparator());
-        //System.out.println(feedQueue);
         return feedList;
     }
 

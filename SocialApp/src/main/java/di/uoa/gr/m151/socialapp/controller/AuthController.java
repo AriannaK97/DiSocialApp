@@ -48,7 +48,7 @@ public class AuthController {
 
         User responseUser = userService.findByUserName(user.getUsername());
 
-        UserDTO userDTO = userService.fillEnhancedUserDTO(responseUser, true, false);
+        UserDTO userDTO = userService.fillEnhancedUserDTO(responseUser, false, false);
 
 
         return ResponseEntity.ok(new JwtTokenResponse(token, userDTO));

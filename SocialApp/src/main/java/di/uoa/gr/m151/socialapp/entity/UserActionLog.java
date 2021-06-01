@@ -1,8 +1,6 @@
 package di.uoa.gr.m151.socialapp.entity;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 

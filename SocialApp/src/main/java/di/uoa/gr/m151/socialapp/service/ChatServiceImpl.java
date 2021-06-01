@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -65,7 +64,6 @@ public class ChatServiceImpl implements ChatService{
     @Override
     public List<MessageDTO> updateChatHistory(String user, String friend, String date)  {
 
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
         SimpleDateFormat format = new SimpleDateFormat(
                 "yyyy-MM-dd'T'HH:mm:ss.SSS");
@@ -83,7 +81,6 @@ public class ChatServiceImpl implements ChatService{
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
         return null;
     }
 
@@ -98,8 +95,6 @@ public class ChatServiceImpl implements ChatService{
         }
 
         return dtoList;
-
     }
-
 
 }

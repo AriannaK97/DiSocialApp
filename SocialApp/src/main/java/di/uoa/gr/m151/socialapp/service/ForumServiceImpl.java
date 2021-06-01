@@ -138,7 +138,6 @@ public class ForumServiceImpl implements ForumService {
         return pageRepository.save(page);
     }
 
-    //TODO: pagination
     @Override
     public List<PageDTO> findAllPages(String currentUsername) {
         User currrentUser;

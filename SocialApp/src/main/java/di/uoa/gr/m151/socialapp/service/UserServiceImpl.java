@@ -51,7 +51,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public User findByUserName(String userName) {
-		// check the database if the user already exists
 		return userRepository.findByUsername(userName);
 	}
 
@@ -79,7 +78,6 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 
-		 // save user in the database
 		return userRepository.save(user);
 	}
 
@@ -166,7 +164,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-		//RegisteredUser user = userDao.findByUserName(userName);
 		User user = userRepository.findByUsername(userName);
 
 		if (user == null) {

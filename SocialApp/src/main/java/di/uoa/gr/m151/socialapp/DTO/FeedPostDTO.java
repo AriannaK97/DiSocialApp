@@ -19,7 +19,6 @@ public class FeedPostDTO {
 
     String content;
 
-    //Timestamp postTime;
     String postTime;
 
     @JsonIgnore

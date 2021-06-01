@@ -1,7 +1,6 @@
 package di.uoa.gr.m151.socialapp.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -10,7 +9,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity

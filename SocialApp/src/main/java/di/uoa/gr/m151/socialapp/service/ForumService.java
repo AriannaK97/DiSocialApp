@@ -37,6 +37,5 @@ public interface ForumService {
 
     List<ThreadPostDTO> findAllThreadsPostsByThread(UUID uuid, String currentUsername, Integer page);
 
-    /*List<ForumThread> findAllPageThreads()*/
 
 }

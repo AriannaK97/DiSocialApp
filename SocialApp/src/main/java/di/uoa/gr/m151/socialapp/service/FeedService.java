@@ -18,8 +18,8 @@ public interface FeedService {
 
     Collection<FeedPostDTO> retrieveFeed(String username);
 
-    public boolean saveFeedPostReaction(FeedReactionDTO feedReactionDTO);
+    boolean saveFeedPostReaction(FeedReactionDTO feedReactionDTO);
 
-    public boolean removePostReaction(UUID feedPostId, String username );
+    boolean removePostReaction(UUID feedPostId, String username );
 
 }

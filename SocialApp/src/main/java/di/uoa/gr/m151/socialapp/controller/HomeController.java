@@ -11,7 +11,6 @@ import di.uoa.gr.m151.socialapp.service.UserService;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-/*@RequestMapping("/home")*/
 @CrossOrigin(origins = "https://localhost:8081")
 public class HomeController {
     @Autowired
@@ -19,7 +18,6 @@ public class HomeController {
 
     @GetMapping("/home")
     public ResponseEntity<?> showHomePage() {
-        /* HttpHeaders responseHeaders = new HttpHeaders();*/
         return new ResponseEntity<String>(HttpStatus.CREATED.toString(),  new HttpHeaders(), HttpStatus.CREATED);
     }
 }

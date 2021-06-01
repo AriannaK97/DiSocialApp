@@ -2,14 +2,12 @@ package di.uoa.gr.m151.socialapp.controller;
 
 import di.uoa.gr.m151.socialapp.DTO.FeedPostDTO;
 import di.uoa.gr.m151.socialapp.DTO.FeedReactionDTO;
-import di.uoa.gr.m151.socialapp.entity.FeedPost;
 import di.uoa.gr.m151.socialapp.service.FeedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 @RestController

@@ -14,6 +14,6 @@ public interface ChatService {
 
     List<MessageDTO> updateChatHistory(String user, String friend, String date);
 
-    public List<UserDTO> findAllUsers(Integer page);
+    List<UserDTO> findAllUsers(Integer page);
 
 }
