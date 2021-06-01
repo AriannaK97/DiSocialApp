@@ -40,9 +40,7 @@ public class ChatController {
     @GetMapping("/updateChatHistory")
     @PreAuthorize("#user == authentication.name")
     public List<MessageDTO> updateChat(@RequestParam(required = false) String date, @RequestParam String user, @RequestParam String friend) {
-        System.out.println(date);
-        SecurityContextHolder.getContext().getAuthentication();
-        if (date == null) {
+        if (date == null || date.equals("null")) {
             return chatService.retrieveChatHistory(user, friend, 0);
         }
         return chatService.updateChatHistory(user, friend, date);
