@@ -93,6 +93,18 @@ public class ForumServiceImpl implements ForumService {
 
     }
 
+    public boolean removeThreadPostUpVote(UUID threadPostId, String username) {
+
+        ThreadPost threadPost = threadPostRepository.findById(threadPostId).orElse(null);
+        User user = userService.findByUserName(username);
+        if (threadPost == null || user == null) {
+            return false;
+        }
+        threadPost.removeUpVote(user);
+        return threadPostRepository.save(threadPost) != null;
+
+    }
+
     @Override
     public boolean savePageRating(PageRatingDTO pageRatingDTO) {
 

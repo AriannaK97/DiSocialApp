@@ -87,6 +87,12 @@ public class ForumController {
         return forumService.findAllThreadsPostsByThread(threadId, currentUsername, page);
     }
 
+    @DeleteMapping("/page/thread/threadPost/upvote")
+    @PreAuthorize("#username == authentication.name")
+    public boolean removeUserReaction(@RequestParam UUID postId, @RequestParam String username) {
+        return forumService.removeThreadPostUpVote(postId, username);
+    }
+
 
 
 }

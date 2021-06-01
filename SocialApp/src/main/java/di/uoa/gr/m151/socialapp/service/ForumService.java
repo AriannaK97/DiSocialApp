@@ -21,6 +21,8 @@ public interface ForumService {
 
     boolean saveThreadPostUpVote(ThreadVoteDTO threadVoteDTO);
 
+    boolean removeThreadPostUpVote(UUID threadPostId, String username);
+
     boolean savePageRating(PageRatingDTO pageRatingDTO);
 
     Page findPageByTitle(String title);

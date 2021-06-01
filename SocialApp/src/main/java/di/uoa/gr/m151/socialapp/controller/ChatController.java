@@ -42,6 +42,9 @@ public class ChatController {
     public List<MessageDTO> updateChat(@RequestParam(required = false) String date, @RequestParam String user, @RequestParam String friend) {
         System.out.println(date);
         SecurityContextHolder.getContext().getAuthentication();
+        if (date == null) {
+            return chatService.retrieveChatHistory(user, friend, 0);
+        }
         return chatService.updateChatHistory(user, friend, date);
     }
 

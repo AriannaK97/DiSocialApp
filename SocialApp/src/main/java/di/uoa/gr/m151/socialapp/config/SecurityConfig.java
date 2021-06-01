@@ -33,10 +33,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JWTConstants jwtConstants;
 
+    @Autowired
+    private CustomAuthenticationErrorHandler customAuthenticationErrorHandler;
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(customAuthenticationErrorHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated()

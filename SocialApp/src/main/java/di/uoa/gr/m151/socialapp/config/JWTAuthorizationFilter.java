@@ -6,6 +6,8 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import di.uoa.gr.m151.socialapp.service.UserService;
 import di.uoa.gr.m151.socialapp.service.UserServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +24,7 @@ import java.util.ArrayList;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
+    private static final Logger logger = LoggerFactory.getLogger(JWTAuthorizationFilter.class);
 
     private JWTConstants jwtProperties;
 
@@ -64,14 +67,14 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                     UserDetails userDetails = userService.loadUserByUsername(user);
                     return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 }
-            } catch (JWTDecodeException jwtExc) {
-                jwtExc.printStackTrace();
+            } catch (JWTDecodeException e) {
+                logger.error("Cannot decode JWT token: {}",e.getMessage());
             }
-            catch (TokenExpiredException exception) {
-                exception.printStackTrace();
+            catch (TokenExpiredException e) {
+                logger.error("JWT token is expired: {}", e.getMessage());
             }
             catch (Exception exception) {
-                exception.printStackTrace();
+                logger.error("Generic error: {}", exception.getMessage());
             }
 
             return null;
