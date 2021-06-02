@@ -14,7 +14,7 @@ public class InitialDummyScoringStrategy implements ScoringStrategy{
         }
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         if (updateTime == null) {
-            return 1;
+            return 0;
         }
         long diffInMS = timestamp.getTime() - updateTime.getTime();
         long diffInDays = evaluationTimeUnit.convert(diffInMS, TimeUnit.MILLISECONDS);
